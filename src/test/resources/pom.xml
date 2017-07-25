@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.crowdcode.maven.plugins</groupId>
+    <artifactId>rancher-maven-plugin-test</artifactId>
+    <name>rancher-maven-plugin-test</name>
+    <version>1.0-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.crowdcode.maven.plugins</groupId>
+                <artifactId>rancher-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                   <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
+                   <accessKey>${ACCESS_KEY}</accessKey>
+                   <password>${PASSWORD}</password>
+                   <url>http://${HOST}/v2-beta</url>
+                   <environment>Default</environment>
+                   <stack>
+                      <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
+                      <name>Stackname</name>
+                      <description>Stackdiscriptions</description>
+                      <actions>remove,wait:millis,create</actions>
+                  </stack>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
