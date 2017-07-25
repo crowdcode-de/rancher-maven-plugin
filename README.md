@@ -1,13 +1,13 @@
-#Rancher API Maven plugin
+# Rancher API Maven plugin
 
 A Maven plugin for interacting with [rancher](http://rancher.com).
 
-##Goal
+## Goal
 There is only one goal: stack-deploy which purpose is to delete and/or create 
 a new rancher stack thanks to a docker-compose file
 
-##Usage
-###pom.xml file
+## Usage
+### pom.xml file
 ```
 <plugin>
     <groupId>io.crowdcode.maven.plugins</groupId>
@@ -28,7 +28,7 @@ a new rancher stack thanks to a docker-compose file
     </configuration>
 </plugin>
 ```
-###Command line
+### Command line
 All optons can be overidden by using line arguments:
 ```
 - rancher.accessKey #rancher login
@@ -48,9 +48,9 @@ Examples:
 mvn rancher:stack-deploy -Drancher.accessKey=XXXX -Drancher.password=YYYYY -D.....
 ```
 
-##Tests
+## Tests
 ```
 mvn clean test
 ```
 
-##Nice to have
+## Nice to have
