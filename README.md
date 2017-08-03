@@ -54,3 +54,12 @@ mvn clean test
 ```
 
 ## Nice to have
+- Convert current unit tests into integration tests because it needs 
+infrastructure (Rancher).
+- Fail if stack could not be successfully created. Action: verify.
+- Check maven parameter provided by user.
+- More Debug-Logging.
+- Better exception handling.
+- Rename "rancherComposeFilePath" to "rancherComposeFile".
+- Update stacks.
+- Update single services in a stack.

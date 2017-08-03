@@ -16,7 +16,6 @@
                 <artifactId>rancher-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
-                   <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
                    <accessKey>${ACCESS_KEY}</accessKey>
                    <password>${PASSWORD}</password>
                    <url>http://${HOST}/v2-beta</url>
