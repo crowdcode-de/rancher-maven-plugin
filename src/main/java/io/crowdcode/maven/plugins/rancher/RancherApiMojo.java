@@ -86,7 +86,7 @@ public class RancherApiMojo extends AbstractMojo {
         byte[] encodedAuth = Base64Utils.encode(auth.getBytes());
         String authHeader = "Basic " + new String(encodedAuth);
 
-        headers.set("Authorization", authHeader);
+        headers.set("Authorization",authHeader);
 
         return headers;
     }
@@ -99,11 +99,11 @@ public class RancherApiMojo extends AbstractMojo {
     private String getEnvironment() {
 
         String envUrl = url + "/projects?name=" + environment;
-        ResponseEntity<String> responseEntity = restTemplate.exchange(envUrl, HttpMethod.GET, new HttpEntity(createBasicAuthHeaders()), String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(envUrl,HttpMethod.GET,new HttpEntity(createBasicAuthHeaders()),String.class);
 
         String responseBody = responseEntity.getBody();
-        Assert.notNull(responseBody, "No http response body for url: " + envUrl);
-        Assert.isTrue(!responseBody.isEmpty(), "No http response body for url: " + envUrl);
+        Assert.notNull(responseBody,"No http response body for url: " + envUrl);
+        Assert.isTrue(!responseBody.isEmpty(),"No http response body for url: " + envUrl);
 
         return responseBody;
     }
@@ -114,9 +114,9 @@ public class RancherApiMojo extends AbstractMojo {
      * @throws MojoExecutionException maven plugin exception
      */
     public void execute() throws MojoExecutionException {
-        Assert.notNull(stack, "stack not defined");
-        stack.init(restTemplate, createBasicAuthHeaders(), getEnvironment(), environment);
-        stack.run();
+        Assert.notNull(stack,"stack not defined");
+        if( stack.init(restTemplate,createBasicAuthHeaders(),getEnvironment(),environment) )
+            stack.run();
 
     }
 }
