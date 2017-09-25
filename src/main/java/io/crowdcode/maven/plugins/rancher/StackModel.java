@@ -43,7 +43,7 @@ public class StackModel {
      * Location of the rancher composer file.
      */
     @Parameter
-    private File rancherComposeFilePath;
+    private File rancherComposeFile;
 
     /**
      * actions

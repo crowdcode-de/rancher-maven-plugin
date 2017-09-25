@@ -38,9 +38,9 @@ All optons can be overidden by using line arguments:
 - rancher.stack.name #Name of the stack to delete/create
 - rancher.stack.description #Stack description
 - rancher.stack.startOnCreate
-- rancher.stack.dockerComposeFilePath #docker-compose filepath
-- rancher.stack.rancherComposeFilePath #rancher-compose filepath
-- rancher.stack.actions #actions witch has to do (remove/create/wait:time)
+- rancher.stack.dockerComposeFile #docker-compose file
+- rancher.stack.rancherComposeFile #rancher-compose file
+- rancher.stack.actions #actions witch has to do (remove/create/wait:time/verify)
 ```
 
 Examples:
@@ -60,6 +60,5 @@ infrastructure (Rancher).
 - Check maven parameter provided by user.
 - More Debug-Logging.
 - Better exception handling.
-- Rename "rancherComposeFilePath" to "rancherComposeFile".
 - Update stacks.
 - Update single services in a stack.
