@@ -1,0 +1,48 @@
+version: '2'
+volumes:
+ applauncher-config-filesystem:
+   external: true
+   driver: 'null'
+ applauncher-public-filesystem:
+   external: true
+   driver: 'null'
+services:
+ topmenubar:
+   mem_limit: 805306368
+   image: three.crowdcode.io:5000/topmenubar:1.0.0-SNAPSHOT-TPI-119-analyze-remote-logging
+   stdin_open: true
+   tty: true
+   ports:
+   - 47014:9014/tcp
+   labels:
+     io.rancher.scheduler.affinity:host_label: HOST_IDENTIFIER=THREE
+     io.rancher.container.pull_image: always
+ landingpage:
+   mem_limit: 805306368
+   image: three.crowdcode.io:5000/tmb-demo:1.0.0-SNAPSHOT-TPI-119-analyze-remote-logging
+   environment:
+     applauncher.url: http://three.crowdcode.io:47010/master/applauncher
+     topmenubar.url: http://three.crowdcode.io:47014/topmenubar
+   stdin_open: true
+   tty: true
+   ports:
+   - 47000:9000/tcp
+   labels:
+     io.rancher.scheduler.affinity:host_label: HOST_IDENTIFIER=THREE
+     io.rancher.container.pull_image: always
+ applauncher:
+   mem_limit: 805306368
+   image: three.crowdcode.io:5000/applauncher:1.0.0-SNAPSHOT-TPI-119-analyze-remote-logging
+   environment:
+     applauncher.images.location: file:/var/public/images/
+     applauncher.config.json: file:/var/config/applauncher.json
+   stdin_open: true
+   volumes:
+   - applauncher-public-filesystem:/var/public
+   - applauncher-config-filesystem:/var/config
+   tty: true
+   ports:
+   - 47010:9010/tcp
+   labels:
+     io.rancher.container.pull_image: always
+     io.rancher.scheduler.affinity:host_label: HOST_IDENTIFIER=THREE
