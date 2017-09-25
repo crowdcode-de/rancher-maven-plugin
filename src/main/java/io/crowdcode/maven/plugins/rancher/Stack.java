@@ -53,7 +53,7 @@ public class Stack extends StackModel {
                 return false;
             }
         } catch( RuntimeException ex ) {
-            log.info("The stack {} at environment {} does not exists",getName(),environment,ex);
+            log.info("The stack {} at environment {} does not exists {}",getName(),environment,ex);
         }
         return true;
     }
@@ -105,10 +105,10 @@ public class Stack extends StackModel {
 
         //Read the docker compose file content
         String dockerComposeContent = readComposeFile(getDockerComposeFile());
-        String rancherComposeContent = readComposeFile(getRancherComposeFilePath());
+        String rancherComposeContent = readComposeFile(getRancherComposeFile());
         ResponseEntity<String> responseEntity;
 
-        Assert.notNull(dockerComposeContent,"dockerComposeContent can not be found");
+        Assert.notNull(dockerComposeContent,"dockerComposeContent "+getDockerComposeFile()+" can not be found");
 
         //Construct POST request payload
         Map<String, String> payload = new HashMap<>();
@@ -132,16 +132,44 @@ public class Stack extends StackModel {
         log.info("About to create new stack with url: {} and payload: {}",stacksUrl,payload);
 
         //Perform http request
+
         try {
             responseEntity = restTemplate.exchange(stacksUrl,HttpMethod.POST,entity,String.class);
             ReadContext ctx = JsonPath.parse(responseEntity.getBody());
             url = ctx.read("links.self");
             log.info("New stack successfully created");
         } catch( RuntimeException ex ) {
-            log.error("Error while parsing stack payload to json",ex);
+            log.error("Error while parsing stack payload to json {}",ex);
+            throw (new RuntimeException(ex));
         }
 
     }
+
+    /**
+     * Verify a stack
+     */
+    private void verifyStack() {
+        if( url != null && !url.isEmpty() ) {
+
+            log.info("Verify the stack: {}",getName());
+
+            try {
+                ResponseEntity<String> responseEntity = restTemplate.exchange(url,HttpMethod.GET,new HttpEntity(headers),String.class);
+
+                ReadContext ctx = JsonPath.parse(responseEntity.getBody());
+                String state = ctx.read("state");
+                log.info("State={}",state);
+                Assert.isTrue("active".equals(state),"Stack not at state active");
+            } catch( RuntimeException ex ) {
+                log.error("Error while verify stack",ex);
+            }
+
+        }
+        else {
+            log.info("Stack " + getName() + " does not exist!");
+        }
+    }
+
 
     /**
      * run all actions a stack
@@ -164,6 +192,7 @@ public class Stack extends StackModel {
                     break;
                 case "wait":
                     try {
+                        log.info("waiting {} millis",timeout);
                         Thread.sleep(timeout);
                     } catch( InterruptedException ex ) {
                         log.error("Error while sleeping",ex);
@@ -171,6 +200,9 @@ public class Stack extends StackModel {
                     break;
                 case "create":
                     createStack();
+                    break;
+                case "verify":
+                    verifyStack();
                     break;
                 default:
                     log.error("Stack unknown action " + a);
