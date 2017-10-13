@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Christoph Schemmelmann (Crowdcode) created on 24.07.17.
+ * @author Christoph Schemmelmann (CROWDCODE) created on 24.07.17.
  */
 @Slf4j
 public class Stack extends StackModel {
@@ -146,10 +146,26 @@ public class Stack extends StackModel {
     }
 
     /**
-     * Verify a stack
+     * wait N milliseconds
+     * 
+     * @action ("wait:ms")
      */
-    private void verifyStack() {
-        if( url != null && !url.isEmpty() ) {
+    private void wait(String action) {
+        if (action.contains(":")) {
+            long timeout = Long.parseLong(action.split(":")[1]);
+            try {
+                log.info("waiting {} millis", timeout);
+                Thread.sleep(timeout);
+            } catch (InterruptedException ex) {
+                log.error("Error while wait sleeping", ex);
+            }
+        } else {
+            log.info("missing time uses wait:NNNN");
+        }
+    }
+
+    private String verify() {
+        if (url != null && !url.isEmpty()) {
 
             log.info("Verify the stack: {}",getName());
 
@@ -159,8 +175,8 @@ public class Stack extends StackModel {
                 ReadContext ctx = JsonPath.parse(responseEntity.getBody());
                 String state = ctx.read("state");
                 log.info("State={}",state);
-                Assert.isTrue("active".equals(state),"Stack not at state active");
-            } catch( RuntimeException ex ) {
+                return state;
+            } catch(RuntimeException ex ) {
                 log.error("Error while verify stack",ex);
             }
 
@@ -168,8 +184,48 @@ public class Stack extends StackModel {
         else {
             log.info("Stack " + getName() + " does not exist!");
         }
+        return "";
     }
 
+    /**
+     * Verify a stack
+     * 
+     * @action ("verify:ms:tries")
+     */
+    private void verifyStack(String action) {
+        String[] param = action.split(":");
+        String state = "";
+        int devider = 10;
+        long timeout;
+        long runtime;
+        switch (param.length) {
+        case 0:
+            state = verify();
+            Assert.isTrue("active".equals(state), "Stack not at state active");
+            return;
+        case 2:
+            devider = Integer.parseInt(param[2]);
+            // no break
+        case 1:
+            runtime = Long.parseLong(param[1]);
+            timeout = java.lang.System.currentTimeMillis() + runtime;
+            break;
+        default:
+            log.error("Error while parsing verify parameters");
+            throw (new RuntimeException(""));
+        }
+        long sleeptime = runtime / devider;
+        while (!"active".equals(state) && java.lang.System.currentTimeMillis() < timeout) {
+            try {
+                log.info("waiting {} millis", sleeptime);
+                Thread.sleep(sleeptime);
+            } catch (InterruptedException ex) {
+                log.error("Error while verify sleeping)", ex);
+            }
+            state = verify();
+        }
+        Assert.isTrue("active".equals(state), "Stack not at state active");
+    }
 
     /**
      * run all actions a stack
@@ -178,10 +234,8 @@ public class Stack extends StackModel {
         String[] actions = getActions().split(",");
         for( String action : actions ) {
             String a;
-            long timeout = 0;
             if( action.contains(":") ) {
                 a = action.split(":")[ 0 ];
-                timeout = Long.parseLong(action.split(":")[ 1 ]);
             }
             else {
                 a = action;
@@ -191,18 +245,13 @@ public class Stack extends StackModel {
                     removeStack();
                     break;
                 case "wait":
-                    try {
-                        log.info("waiting {} millis",timeout);
-                        Thread.sleep(timeout);
-                    } catch( InterruptedException ex ) {
-                        log.error("Error while sleeping",ex);
-                    }
+                    wait(action);
                     break;
                 case "create":
                     createStack();
                     break;
                 case "verify":
-                    verifyStack();
+                    verifyStack(action);
                     break;
                 default:
                     log.error("Stack unknown action " + a);

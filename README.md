@@ -12,7 +12,7 @@ a new rancher stack thanks to a docker-compose file
 <plugin>
     <groupId>io.crowdcode.maven.plugins</groupId>
     <artifactId>rancher-maven-plugin</artifactId>
-    <version>1.0-0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <configuration>
         <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
         <accessKey>${ACCESS_KEY}</accessKey>
@@ -40,7 +40,7 @@ All optons can be overidden by using line arguments:
 - rancher.stack.startOnCreate
 - rancher.stack.dockerComposeFile #docker-compose file
 - rancher.stack.rancherComposeFile #rancher-compose file
-- rancher.stack.actions #actions witch has to do (remove/create/wait:time/verify)
+- rancher.stack.actions #actions witch has to do (remove/create/wait:time/verify[:timeout[:attempts]])
 ```
 
 Examples:
@@ -56,7 +56,6 @@ mvn clean test
 ## Nice to have
 - Convert current unit tests into integration tests because it needs 
 infrastructure (Rancher).
-- Fail if stack could not be successfully created. Action: verify.
 - Check maven parameter provided by user.
 - More Debug-Logging.
 - Better exception handling.
