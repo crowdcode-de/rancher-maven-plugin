@@ -12,7 +12,7 @@ a new rancher stack thanks to a docker-compose file
 <plugin>
     <groupId>io.crowdcode.maven.plugins</groupId>
     <artifactId>rancher-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-0</version>
     <configuration>
         <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
         <accessKey>${ACCESS_KEY}</accessKey>
