@@ -190,7 +190,7 @@ public class Stack extends StackModel {
     /**
      * Verify a stack
      * 
-     * @action ("verify:ms:tries")
+     * @action ("verify:ms:attempts")
      */
     private void verifyStack(String action) {
         String[] param = action.split(":");

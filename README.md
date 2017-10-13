@@ -23,7 +23,7 @@ a new rancher stack thanks to a docker-compose file
             <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
             <name>Stackname</name>
             <description>Stackdiscriptions</description>
-            <actions>remove,wait:millis,create</actions>
+            <actions>remove,wait:millis,create,verify[:timeout[:attempts]]</actions>
         </stack>
     </configuration>
 </plugin>
