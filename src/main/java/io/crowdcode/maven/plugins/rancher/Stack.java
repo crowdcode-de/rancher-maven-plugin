@@ -151,8 +151,8 @@ public class Stack extends StackModel {
      * @action ("wait:ms")
      */
     private void wait(String action) {
-        if (action.contains(":")) {
-            long timeout = Long.parseLong(action.split(":")[1]);
+        if (action.matches("[0-9]*")) {
+            long timeout = Long.parseLong(action);
             try {
                 log.info("waiting {} millis", timeout);
                 Thread.sleep(timeout);
@@ -193,12 +193,17 @@ public class Stack extends StackModel {
      * @action ("verify:ms:attempts")
      */
     private void verifyStack(String action) {
-        String[] param = action.split(":");
+    	int paramCount = 0;
+    	String[] param = null;
+    	if (! action.isEmpty()){
+           param = action.split(":");
+           paramCount = param.length;
+    	}
         String state = "";
         int devider = 10;
         long timeout;
         long runtime;
-        switch (param.length) {
+        switch (paramCount) {
         case 0:
             state = verify();
             Assert.isTrue("active".equals(state), "Stack not at state active");
@@ -234,8 +239,10 @@ public class Stack extends StackModel {
         String[] actions = getActions().split(",");
         for( String action : actions ) {
             String a;
+            String param = "";
             if( action.contains(":") ) {
                 a = action.split(":")[ 0 ];
+                param = action.split(":",2)[1];
             }
             else {
                 a = action;
@@ -245,13 +252,13 @@ public class Stack extends StackModel {
                     removeStack();
                     break;
                 case "wait":
-                    wait(action);
+                    wait(param);
                     break;
                 case "create":
                     createStack();
                     break;
                 case "verify":
-                    verifyStack(action);
+                    verifyStack(param);
                     break;
                 default:
                     log.error("Stack unknown action " + a);
