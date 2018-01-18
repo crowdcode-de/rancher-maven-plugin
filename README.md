@@ -12,7 +12,7 @@ a new rancher stack thanks to a docker-compose file
 <plugin>
     <groupId>io.crowdcode.maven.plugins</groupId>
     <artifactId>rancher-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <configuration>
         <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
         <accessKey>${ACCESS_KEY}</accessKey>
@@ -56,7 +56,7 @@ mvn clean test
 ## Nice to have
 - Convert current unit tests into integration tests because it needs 
 infrastructure (Rancher).
-- Fail if stack could not be successfully created. Action: verify.
+- Action: verify: polling state instead fix time
 - Check maven parameter provided by user.
 - More Debug-Logging.
 - Better exception handling.
