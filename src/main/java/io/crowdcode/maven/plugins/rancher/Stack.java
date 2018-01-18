@@ -162,6 +162,7 @@ public class Stack extends StackModel {
                 Assert.isTrue("active".equals(state),"Stack not at state active");
             } catch( RuntimeException ex ) {
                 log.error("Error while verify stack",ex);
+                throw (new RuntimeException(ex));
             }
 
         }
