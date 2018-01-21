@@ -12,7 +12,7 @@ a new rancher stack thanks to a docker-compose file
 <plugin>
     <groupId>io.crowdcode.maven.plugins</groupId>
     <artifactId>rancher-maven-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <configuration>
         <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
         <accessKey>${ACCESS_KEY}</accessKey>
@@ -50,8 +50,8 @@ Examples:
 mvn rancher:stack-deploy -Drancher.accessKey=XXXX -Drancher.password=YYYYY -D.....
 ```
 
-skip: 
-if set to true disables creating a Stack. This config option is best used together with a maven property
+### skip: 
+If set to true disables creating a Stack. This config option is best used together with a maven property
 
 ## Tests
 ```
