@@ -178,6 +178,7 @@ public class Stack extends StackModel {
                 return state;
             } catch(RuntimeException ex ) {
                 log.error("Error while verify stack",ex);
+                throw (new RuntimeException(ex));
             }
 
         }

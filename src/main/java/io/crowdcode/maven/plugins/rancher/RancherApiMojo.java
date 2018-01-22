@@ -69,6 +69,9 @@ public class RancherApiMojo extends AbstractMojo {
     @Parameter(property = "stack", required = true)
     private Stack stack;
 
+    @Parameter
+    private boolean skip = false;
+
     public RancherApiMojo() {
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -114,6 +117,8 @@ public class RancherApiMojo extends AbstractMojo {
      * @throws MojoExecutionException maven plugin exception
      */
     public void execute() throws MojoExecutionException {
+        if (skip)
+          return;
         Assert.notNull(stack,"stack not defined");
         if( stack.init(restTemplate,createBasicAuthHeaders(),getEnvironment(),environment) )
             stack.run();

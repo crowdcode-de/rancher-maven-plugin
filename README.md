@@ -1,9 +1,9 @@
 # Rancher API Maven plugin
 
-A Maven plugin for interacting with [rancher](http://rancher.com).
+A Maven plugin for interacting with [rancher](http://rancher.com). Forked from: https://github.com/RedFroggy/rancher-maven-plugin
 
 ## Goal
-There is only one goal: stack-deploy which purpose is to delete and/or create 
+There is only one goal: stack-deploy which purpose is to delete and/or create
 a new rancher stack thanks to a docker-compose file
 
 ## Usage
@@ -12,11 +12,12 @@ a new rancher stack thanks to a docker-compose file
 <plugin>
     <groupId>io.crowdcode.maven.plugins</groupId>
     <artifactId>rancher-maven-plugin</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
     <configuration>
         <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
         <accessKey>${ACCESS_KEY}</accessKey>
         <password>${PASSWORD}</password>
+        <skip>false</skip>
         <url>http://${HOST}/v2-beta</url>
         <environment>Default</environment>
         <stack>
@@ -31,22 +32,27 @@ a new rancher stack thanks to a docker-compose file
 ### Command line
 All optons can be overidden by using line arguments:
 ```
-- rancher.accessKey #rancher login
+- rancher.accessKey # rancher login
 - rancher.password # rancher password
 - rancher.url #rancher url (should be http://HOST)(v2-beta will be used)
 - rancher.environment # environment
-- rancher.stack.name #Name of the stack to delete/create
-- rancher.stack.description #Stack description
+- rancher.skip # enable or disable plugin. Default enable
+- rancher.stack.name # Name of the stack to delete/create
+- rancher.stack.description # Stack description
 - rancher.stack.startOnCreate
-- rancher.stack.dockerComposeFile #docker-compose file
-- rancher.stack.rancherComposeFile #rancher-compose file
-- rancher.stack.actions #actions witch has to do (remove/create/wait:time/verify[:timeout[:attempts]])
+- rancher.stack.dockerComposeFile # docker-compose file
+- rancher.stack.rancherComposeFile # rancher-compose file
+- rancher.stack.actions # actions witch has to do (remove/create/wait:time/verify[:timeout[:attempts]])
 ```
 
 Examples:
 ```
 mvn rancher:stack-deploy -Drancher.accessKey=XXXX -Drancher.password=YYYYY -D.....
+mvn rancher:verify [:timeout[:attempts]] ....
 ```
+
+### skip:
+If set to true disables creating a Stack. This config option is best used together with a maven property
 
 ## Tests
 ```
@@ -54,8 +60,9 @@ mvn clean test
 ```
 
 ## Nice to have
-- Convert current unit tests into integration tests because it needs 
+- Convert current unit tests into integration tests because it needs
 infrastructure (Rancher).
+- Action: verify: polling state instead fix time
 - Check maven parameter provided by user.
 - More Debug-Logging.
 - Better exception handling.
