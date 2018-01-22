@@ -3,7 +3,7 @@
 A Maven plugin for interacting with [rancher](http://rancher.com). Forked from: https://github.com/RedFroggy/rancher-maven-plugin
 
 ## Goal
-There is only one goal: stack-deploy which purpose is to delete and/or create 
+There is only one goal: stack-deploy which purpose is to delete and/or create
 a new rancher stack thanks to a docker-compose file
 
 ## Usage
@@ -24,7 +24,7 @@ a new rancher stack thanks to a docker-compose file
             <dockerComposeFile>src/main/resources/docker-compose.yml</dockerComposeFile>
             <name>Stackname</name>
             <description>Stackdiscriptions</description>
-            <actions>remove,wait:millis,create</actions>
+            <actions>remove,wait:millis,create,verify[:timeout[:attempts]]</actions>
         </stack>
     </configuration>
 </plugin>
@@ -42,15 +42,16 @@ All optons can be overidden by using line arguments:
 - rancher.stack.startOnCreate
 - rancher.stack.dockerComposeFile # docker-compose file
 - rancher.stack.rancherComposeFile # rancher-compose file
-- rancher.stack.actions # actions witch has to do (remove/create/wait:time/verify)
+- rancher.stack.actions # actions witch has to do (remove/create/wait:time/verify[:timeout[:attempts]])
 ```
 
 Examples:
 ```
 mvn rancher:stack-deploy -Drancher.accessKey=XXXX -Drancher.password=YYYYY -D.....
+mvn rancher:verify [:timeout[:attempts]] ....
 ```
 
-### skip: 
+### skip:
 If set to true disables creating a Stack. This config option is best used together with a maven property
 
 ## Tests
@@ -59,7 +60,7 @@ mvn clean test
 ```
 
 ## Nice to have
-- Convert current unit tests into integration tests because it needs 
+- Convert current unit tests into integration tests because it needs
 infrastructure (Rancher).
 - Action: verify: polling state instead fix time
 - Check maven parameter provided by user.

@@ -1,6 +1,9 @@
 package io.crowdcode.maven.plugins.rancher;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import org.apache.maven.plugins.annotations.Parameter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +16,8 @@ import java.io.File;
  * @author Christoph Schemmelmann (Crowdcode) created on 24.07.17.
  */
 @Getter
+@Setter
+@Accessors(chain=true)
 public class StackModel {
 
     /**

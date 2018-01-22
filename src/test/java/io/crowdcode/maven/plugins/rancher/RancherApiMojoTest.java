@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -44,6 +45,7 @@ public class RancherApiMojoTest extends AbstractMojoTestCase {
     }
 
     @Test
+    @Ignore
     public void testValidPom() throws Exception {
 
         File pom = new File(getBasedir(), "src/test/resources/pom.xml");
