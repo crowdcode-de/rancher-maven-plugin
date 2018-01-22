@@ -48,7 +48,6 @@ All optons can be overidden by using line arguments:
 Examples:
 ```
 mvn rancher:stack-deploy -Drancher.accessKey=XXXX -Drancher.password=YYYYY -D.....
-mvn rancher:verify [:timeout[:attempts]] ....
 ```
 
 ### skip:

@@ -31,7 +31,7 @@ import org.junit.Test;
 import java.io.File;
 
 @Slf4j
-public class RancherApiMojoTest extends AbstractMojoTestCase {
+public class RancherApiMojoIT extends AbstractMojoTestCase {
 
     @Rule
     public MojoRule rule = new MojoRule();
