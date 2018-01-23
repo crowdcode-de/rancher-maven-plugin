@@ -1,0 +1,117 @@
+{
+  "type": "collection",
+  "resourceType": "stack",
+  "links": {
+    "self": "…/v2-beta/projects/1a5/stacks"
+  },
+  "createTypes": {
+    "composeProject": "…/v2-beta/projects/1a5/composeprojects",
+    "kubernetesStack": "…/v2-beta/projects/1a5/kubernetesstacks",
+    "stack": "…/v2-beta/projects/1a5/stacks"
+  },
+  "actions": { },
+  "data": [
+    {
+      "id": "1st257",
+      "type": "stack",
+      "links": {
+        "self": "…/v2-beta/projects/1a5/stacks/1st257",
+        "account": "…/v2-beta/projects/1a5/stacks/1st257/account",
+        "hosts": "…/v2-beta/projects/1a5/stacks/1st257/hosts",
+        "instances": "…/v2-beta/projects/1a5/stacks/1st257/instances",
+        "scheduledUpgrades": "…/v2-beta/projects/1a5/stacks/1st257/scheduledupgrades",
+        "secrets": "…/v2-beta/projects/1a5/stacks/1st257/secrets",
+        "services": "…/v2-beta/projects/1a5/stacks/1st257/services",
+        "volumeTemplates": "…/v2-beta/projects/1a5/stacks/1st257/volumetemplates",
+        "volumes": "…/v2-beta/projects/1a5/stacks/1st257/volumes",
+        "composeConfig": "…/v2-beta/projects/1a5/stacks/1st257/composeconfig"
+      },
+      "actions": {
+        "deactivateservices": "…/v2-beta/projects/1a5/stacks/1st257/?action=deactivateservices",
+        "activateservices": "…/v2-beta/projects/1a5/stacks/1st257/?action=activateservices",
+        "upgrade": "…/v2-beta/projects/1a5/stacks/1st257/?action=upgrade",
+        "addoutputs": "…/v2-beta/projects/1a5/stacks/1st257/?action=addoutputs",
+        "update": "…/v2-beta/projects/1a5/stacks/1st257/?action=update",
+        "exportconfig": "…/v2-beta/projects/1a5/stacks/1st257/?action=exportconfig",
+        "remove": "…/v2-beta/projects/1a5/stacks/1st257/?action=remove"
+      },
+      "baseType": "stack",
+      "name": "TestStack",
+      "state": "active",
+      "accountId": "1a5",
+      "answers": null,
+      "binding": null,
+      "created": "2018-01-23T07:36:03Z",
+      "createdTS": 1516692963000,
+      "description": "Test Rancher Plugin",
+      "dockerCompose": null,
+      "environment": null,
+      "externalId": "",
+      "group": null,
+      "healthState": "healthy",
+      "kind": "stack",
+      "outputs": null,
+      "previousEnvironment": null,
+      "previousExternalId": null,
+      "rancherCompose": null,
+      "removed": null,
+      "serviceIds": [
+        "1s665"
+      ],
+      "startOnCreate": true,
+      "system": false,
+      "templates": null,
+      "transitioning": "no",
+      "transitioningMessage": null,
+      "transitioningProgress": null,
+      "uuid": "998bf1fd-7c63-4511-8b4b-ebc2c51b410e"
+    }
+  ],
+  "sortLinks": {
+    "accountId": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=accountId",
+    "created": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=created",
+    "description": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=description",
+    "externalId": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=externalId",
+    "group": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=group",
+    "healthState": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=healthState",
+    "id": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=id",
+    "kind": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=kind",
+    "name": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=name",
+    "removeTime": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=removeTime",
+    "removed": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=removed",
+    "state": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=state",
+    "system": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=system",
+    "uuid": "…/v2-beta/projects/1a5/stacks?name=TestStack&sort=uuid"
+  },
+  "pagination": {
+    "first": null,
+    "previous": null,
+    "next": null,
+    "limit": 100,
+    "total": null,
+    "partial": false
+  },
+  "sort": null,
+  "filters": {
+    "accountId": null,
+    "created": null,
+    "description": null,
+    "externalId": null,
+    "group": null,
+    "healthState": null,
+    "id": null,
+    "kind": null,
+    "name": [
+      {
+        "value": "TestStack",
+        "modifier": "eq"
+      }
+    ],
+    "removeTime": null,
+    "removed": null,
+    "state": null,
+    "system": null,
+    "uuid": null
+  },
+  "createDefaults": { }
+}

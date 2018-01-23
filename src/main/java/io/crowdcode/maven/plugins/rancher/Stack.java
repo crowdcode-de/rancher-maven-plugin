@@ -154,7 +154,7 @@ public class Stack extends StackModel {
         if (action.matches("[0-9]*")) {
             long timeout = Long.parseLong(action);
             try {
-                log.info("waiting {} millis", timeout);
+                log.info("wait() waiting {} millis", timeout);
                 Thread.sleep(timeout);
             } catch (InterruptedException ex) {
                 log.error("Error while wait sleeping", ex);
@@ -210,10 +210,10 @@ public class Stack extends StackModel {
             Assert.isTrue("active".equals(state), "Stack not at state active");
             return;
         case 2:
-            devider = Integer.parseInt(param[2]);
+            devider = Integer.parseInt(param[1]);
             // no break
         case 1:
-            runtime = Long.parseLong(param[1]);
+            runtime = Long.parseLong(param[0]);
             timeout = java.lang.System.currentTimeMillis() + runtime;
             break;
         default:
@@ -223,14 +223,15 @@ public class Stack extends StackModel {
         long sleeptime = runtime / devider;
         while (!"active".equals(state) && java.lang.System.currentTimeMillis() < timeout) {
             try {
-                log.info("waiting {} millis", sleeptime);
+                log.info("verifyStack() waiting {} millis", sleeptime);
                 Thread.sleep(sleeptime);
             } catch (InterruptedException ex) {
                 log.error("Error while verify sleeping)", ex);
             }
             state = verify();
         }
-        Assert.isTrue("active".equals(state), "Stack not at state active");
+        if (! "active".equals(state))
+            throw new RuntimeException("Stack not at state active");
     }
 
     /**
