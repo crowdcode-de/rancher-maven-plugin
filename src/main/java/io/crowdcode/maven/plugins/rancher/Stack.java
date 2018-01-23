@@ -23,6 +23,12 @@ import java.util.Map;
 @Slf4j
 public class Stack extends StackModel {
 
+    private static final class BadStateException extends RuntimeException {
+        public BadStateException(String message) {
+            super(message);
+        }
+    }
+
     String stacksUrl;
     private RestTemplate restTemplate;
     private HttpHeaders headers;
@@ -140,7 +146,7 @@ public class Stack extends StackModel {
             log.info("New stack successfully created");
         } catch( RuntimeException ex ) {
             log.error("Error while parsing stack payload to json {}",ex);
-            throw (new RuntimeException(ex));
+            throw ex;
         }
 
     }
@@ -154,7 +160,7 @@ public class Stack extends StackModel {
         if (action.matches("[0-9]*")) {
             long timeout = Long.parseLong(action);
             try {
-                log.info("waiting {} millis", timeout);
+                log.info("wait() waiting {} millis", timeout);
                 Thread.sleep(timeout);
             } catch (InterruptedException ex) {
                 log.error("Error while wait sleeping", ex);
@@ -177,8 +183,8 @@ public class Stack extends StackModel {
                 log.info("State={}",state);
                 return state;
             } catch(RuntimeException ex ) {
-                log.error("Error while verify stack",ex);
-                throw (new RuntimeException(ex));
+                log.error("Error while verifying stack",ex);
+                throw ex;
             }
 
         }
@@ -200,37 +206,41 @@ public class Stack extends StackModel {
            param = action.split(":");
            paramCount = param.length;
     	}
+
         String state = "";
         int devider = 10;
         long timeout;
         long runtime;
+
         switch (paramCount) {
         case 0:
             state = verify();
             Assert.isTrue("active".equals(state), "Stack not at state active");
             return;
         case 2:
-            devider = Integer.parseInt(param[2]);
+            devider = Integer.parseInt(param[1]);
             // no break
         case 1:
-            runtime = Long.parseLong(param[1]);
+            runtime = Long.parseLong(param[0]);
             timeout = java.lang.System.currentTimeMillis() + runtime;
             break;
         default:
             log.error("Error while parsing verify parameters");
-            throw (new RuntimeException(""));
+            throw (new IllegalArgumentException("Error while parsing verify parameters"));
         }
         long sleeptime = runtime / devider;
         while (!"active".equals(state) && java.lang.System.currentTimeMillis() < timeout) {
             try {
-                log.info("waiting {} millis", sleeptime);
+                log.info("verifyStack() waiting {} millis", sleeptime);
                 Thread.sleep(sleeptime);
             } catch (InterruptedException ex) {
                 log.error("Error while verify sleeping)", ex);
+                throw new RuntimeException(ex);
             }
             state = verify();
         }
-        Assert.isTrue("active".equals(state), "Stack not at state active");
+        if (! "active".equals(state))
+            throw new BadStateException("Stack not at state active");
     }
 
     /**
