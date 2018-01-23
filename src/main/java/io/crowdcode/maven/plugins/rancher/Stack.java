@@ -23,6 +23,12 @@ import java.util.Map;
 @Slf4j
 public class Stack extends StackModel {
 
+    private static final class BadStateException extends RuntimeException {
+        public BadStateException(String message) {
+            super(message);
+        }
+    }
+
     String stacksUrl;
     private RestTemplate restTemplate;
     private HttpHeaders headers;
@@ -140,7 +146,7 @@ public class Stack extends StackModel {
             log.info("New stack successfully created");
         } catch( RuntimeException ex ) {
             log.error("Error while parsing stack payload to json {}",ex);
-            throw (new RuntimeException(ex));
+            throw ex;
         }
 
     }
@@ -177,8 +183,8 @@ public class Stack extends StackModel {
                 log.info("State={}",state);
                 return state;
             } catch(RuntimeException ex ) {
-                log.error("Error while verify stack",ex);
-                throw (new RuntimeException(ex));
+                log.error("Error while verifying stack",ex);
+                throw ex;
             }
 
         }
@@ -200,10 +206,12 @@ public class Stack extends StackModel {
            param = action.split(":");
            paramCount = param.length;
     	}
+
         String state = "";
         int devider = 10;
         long timeout;
         long runtime;
+
         switch (paramCount) {
         case 0:
             state = verify();
@@ -218,7 +226,7 @@ public class Stack extends StackModel {
             break;
         default:
             log.error("Error while parsing verify parameters");
-            throw (new RuntimeException(""));
+            throw (new IllegalArgumentException("Error while parsing verify parameters"));
         }
         long sleeptime = runtime / devider;
         while (!"active".equals(state) && java.lang.System.currentTimeMillis() < timeout) {
@@ -227,11 +235,12 @@ public class Stack extends StackModel {
                 Thread.sleep(sleeptime);
             } catch (InterruptedException ex) {
                 log.error("Error while verify sleeping)", ex);
+                throw new RuntimeException(ex);
             }
             state = verify();
         }
         if (! "active".equals(state))
-            throw new RuntimeException("Stack not at state active");
+            throw new BadStateException("Stack not at state active");
     }
 
     /**
