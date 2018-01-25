@@ -1,6 +1,6 @@
 # Rancher API Maven plugin
 
-A Maven plugin for interacting with [rancher](http://rancher.com). Forked from: https://github.com/RedFroggy/rancher-maven-plugin
+A Maven plugin for interacting with [rancher](http://rancher.com). Basing on the sources from: https://github.com/RedFroggy/rancher-maven-plugin
 
 ## Goal
 There is only one goal: stack-deploy which purpose is to delete and/or create
