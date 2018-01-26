@@ -61,7 +61,6 @@ mvn clean test
 ## Nice to have
 - Convert current unit tests into integration tests because it needs
 infrastructure (Rancher).
-- Action: verify: polling state instead fix time
 - Check maven parameter provided by user.
 - More Debug-Logging.
 - Better exception handling.
