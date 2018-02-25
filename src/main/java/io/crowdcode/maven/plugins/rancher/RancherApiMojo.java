@@ -119,6 +119,10 @@ public class RancherApiMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         if (skip)
           return;
+        if (stack.getName().length()>63) {
+        	stack.setName(stack.getName().substring(0,62));
+        	log.warn("Stackname truncate: \"" + stack.getName() + "\"" );
+        }
         Assert.notNull(stack,"stack not defined");
         if( stack.init(restTemplate,createBasicAuthHeaders(),getEnvironment(),environment) )
             stack.run();
