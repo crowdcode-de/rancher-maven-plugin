@@ -42,6 +42,8 @@ import org.springframework.web.client.RestTemplate;
 @Execute(phase = LifecyclePhase.PROCESS_SOURCES, goal = "stack-deploy")
 public class RancherApiMojo extends AbstractMojo {
 
+    private static final int MAX_STACK_NAME_LENGTH = 63;
+
     private RestTemplate restTemplate;
     /**
      * Rancher app key
@@ -119,6 +121,10 @@ public class RancherApiMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         if (skip)
           return;
+        if (stack.getName().length()>MAX_STACK_NAME_LENGTH) {
+        	stack.setName(stack.getName().substring(0,MAX_STACK_NAME_LENGTH-1));
+        	log.warn("Stackname to long, truncated to: \"" + stack.getName() + "\"" );
+        }
         Assert.notNull(stack,"stack not defined");
         if( stack.init(restTemplate,createBasicAuthHeaders(),getEnvironment(),environment) )
             stack.run();
