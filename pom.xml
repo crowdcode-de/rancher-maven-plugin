@@ -45,16 +45,20 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.plugin.api>3.3.9</maven.plugin.api>
-        <maven.plugin.annotations>3.4</maven.plugin.annotations>
+        <maven.plugin.api>3.6.1</maven.plugin.api>
+        <maven.plugin.annotations>3.6.0</maven.plugin.annotations>
         <junit>4.12</junit>
         <springframework.web>4.3.6.RELEASE</springframework.web>
         <json.path>2.2.0</json.path>
-        <jackson.core>2.8.6</jackson.core>
-        <java.version>1.8</java.version>
+        <jackson.core>2.12.3</jackson.core>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <maven.plugin.testing>3.3.0</maven.plugin.testing>
-        <maven.resources.plugin>3.0.2</maven.resources.plugin>
+        <maven.resources>3.0.2</maven.resources>
+        <maven-source>3.2.1</maven-source>
         <maven.release>2.5.3</maven.release>
+        <maven-javadoc>3.2.0</maven-javadoc>
+        <maven-gpg>1.6</maven-gpg>
         <org.projectlombok>1.16.18</org.projectlombok>
         <mockito.version>1.9.5</mockito.version>
     </properties>
@@ -134,7 +138,7 @@
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
-            <version>${maven.resources.plugin}</version>
+            <version>${maven.resources}</version>
             <scope>test</scope>
         </dependency>
 
@@ -181,18 +185,19 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg}</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.6.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -213,6 +218,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source}</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -225,6 +231,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven-javadoc}</version>
                         <configuration>
                             <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
                             <reportOutputDirectory>${project.build.directory}/javadoc</reportOutputDirectory>
