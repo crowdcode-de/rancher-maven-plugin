@@ -45,22 +45,23 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.plugin.api>3.6.1</maven.plugin.api>
-        <maven.plugin.annotations>3.6.0</maven.plugin.annotations>
-        <junit>4.12</junit>
-        <springframework.web>4.3.6.RELEASE</springframework.web>
-        <json.path>2.2.0</json.path>
+        <maven.plugin.api>3.8.1</maven.plugin.api>
+        <maven.plugin.annotations>3.6.1</maven.plugin.annotations>
+        <maven.plugin.plugin>3.6.1</maven.plugin.plugin>
+        <junit>4.13.1</junit>
+        <springframework.web>5.3.6</springframework.web>
+        <json.path>2.5.0</json.path>
         <jackson.core>2.12.3</jackson.core>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.plugin.testing>3.3.0</maven.plugin.testing>
-        <maven.resources>3.0.2</maven.resources>
+        <maven.resources>3.2.0</maven.resources>
         <maven-source>3.2.1</maven-source>
         <maven.release>2.5.3</maven.release>
         <maven-javadoc>3.2.0</maven-javadoc>
         <maven-gpg>1.6</maven-gpg>
-        <org.projectlombok>1.16.18</org.projectlombok>
-        <mockito.version>1.9.5</mockito.version>
+        <org.projectlombok>1.18.20</org.projectlombok>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
     <dependencies>
 
@@ -197,7 +198,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven.plugin.plugin}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
