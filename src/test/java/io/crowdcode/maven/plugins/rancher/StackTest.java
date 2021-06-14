@@ -3,24 +3,30 @@ package io.crowdcode.maven.plugins.rancher;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import lombok.extern.slf4j.Slf4j;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 @Slf4j
@@ -46,6 +52,9 @@ public class StackTest {
 
     @Mock
     private RestTemplate restTemplate;
+    
+    @Mock
+    RestClientResponseException clientResponseException;
 
     private static Stack defaultStack() {
         Stack stack = new Stack();
@@ -147,4 +156,29 @@ public class StackTest {
         }
     }
 
+    @Test
+    public void runVerifyFailStackTestWithResponseBody() {
+        try {
+            String environmentResponse = Resources.toString(enviromentResponseUrl,Charsets.UTF_8);
+
+            Stack s = defaultStack();
+            when(restTemplate.exchange(
+                    Matchers.<String>any(),
+                    Matchers.any(),
+                    Matchers.any(),
+                    Matchers.<Class<?>> any())
+            ).thenThrow(clientResponseException);
+
+            s.init(restTemplate,headers,environmentResponse,"default");
+            s.setActions("verify");
+            try {
+				s.run();
+				Assert.fail("Exception must be thrown here");
+			} catch (RestClientResponseException e) {
+			}
+            Mockito.verify(clientResponseException, times(1)).getResponseBodyAsString();
+        } catch( IOException e ) {
+            Assert.fail(e.getMessage());
+        }
+    }
 }

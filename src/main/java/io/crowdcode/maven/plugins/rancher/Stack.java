@@ -7,7 +7,12 @@ import com.jayway.jsonpath.ReadContext;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -74,7 +79,7 @@ public class Stack extends StackModel {
             log.info("About to delete the stack: {}",stackUrl);
 
             try {
-                restTemplate.exchange(stackUrl,HttpMethod.POST,new HttpEntity(headers),String.class);
+                exchange(stackUrl,HttpMethod.POST,new HttpEntity(headers));
                 log.info("Stack {} successfully deleted",stackUrl);
                 url = "";
             } catch( RuntimeException ex ) {
@@ -139,17 +144,38 @@ public class Stack extends StackModel {
 
         //Perform http request
 
+        responseEntity = exchange(stacksUrl, HttpMethod.POST, entity);
         try {
-            responseEntity = restTemplate.exchange(stacksUrl,HttpMethod.POST,entity,String.class);
-            ReadContext ctx = JsonPath.parse(responseEntity.getBody());
-            url = ctx.read("links.self");
-            log.info("New stack successfully created");
-        } catch( RuntimeException ex ) {
+	        ReadContext ctx = JsonPath.parse(responseEntity.getBody());
+	        url = ctx.read("links.self");
+        }
+        catch( RuntimeException ex ) {
             log.error("Error while parsing stack payload to json {}",ex);
             throw ex;
         }
+        log.info("New stack successfully created");
 
     }
+
+	private ResponseEntity<String> exchange(String url, HttpMethod httpMethod, HttpEntity<String> entity) {
+		ResponseEntity<String> responseEntity;
+		try {
+
+            responseEntity = restTemplate.exchange(url, httpMethod, entity, String.class);
+        } 
+        catch (RestClientResponseException rcre)
+        {
+    		log.error("Error while parsing stack payload to json {}",rcre);
+        	String responseBodyAsString = rcre.getResponseBodyAsString();
+			if (!StringUtils.isEmpty(responseBodyAsString))
+        	{
+				//Let caller know the response body due tu receive detail informations in case of an error.
+        		log.error("Response Body: {}", responseBodyAsString);
+        	}
+			throw rcre;
+        }
+		return responseEntity;
+	}
 
     /**
      * wait N milliseconds
@@ -175,9 +201,8 @@ public class Stack extends StackModel {
 
             log.info("Verify the stack: {}",getName());
 
+            ResponseEntity<String> responseEntity =exchange(url, HttpMethod.GET, new HttpEntity(headers));
             try {
-                ResponseEntity<String> responseEntity = restTemplate.exchange(url,HttpMethod.GET,new HttpEntity(headers),String.class);
-
                 ReadContext ctx = JsonPath.parse(responseEntity.getBody());
                 String state = ctx.read("state");
                 log.info("State={}",state);
