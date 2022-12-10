@@ -65,7 +65,7 @@
         <maven.plugin.annotations>3.6.1</maven.plugin.annotations>
         <maven.plugin.plugin>3.6.1</maven.plugin.plugin>
         <junit>4.13.1</junit>
-        <springframework.web>5.3.6</springframework.web>
+        <springframework.web>6.0.0</springframework.web>
         <json.path>2.5.0</json.path>
         <jackson.core>2.12.3</jackson.core>
         <maven.compiler.source>1.8</maven.compiler.source>
